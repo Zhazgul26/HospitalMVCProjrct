@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container" style="width: 83%; margin: 4px auto">
+    <div class="card" style="width: 43rem;"
+         th:each="hospital:${hospitals}">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${hospital.name}">Name</h5>
+            <p class="card-text" th:text="${hospital.address}">Address</p>
+
+            <form th:method="DELETE" th:action="@{/hospitals/{id}/delete(id=${hospital.getId()})}">
+                <input type="submit" class="btn btn-outline-primary"  th:value="  Delete  "/>
+            </form>
+            <form th:method="UPDATE" th:action="@{/WEB-INF/views/hospital/hospitals.html/update(id${hospital.id})}">
+                <input type="submit" class="btn btn-outline-primary"  th:value="  Update  "/>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+<br>
+<br>
+
+<p style="text-align:center;">
+    <a class="btn btn-outline-primary" role="button" href="/hospitals/savePage">Add new Hospital</a></p>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
+</html>

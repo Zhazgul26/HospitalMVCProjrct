@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Departments</title>
+</head>
+<body>
+<div class="wrapper-btn">
+  <a th:href="@{/url}">
+    <button class="btn btn-primary" type="button">back</button>
+  </a>
+  <a th:href="@{/departments/saveDepartment}">
+    <button class="btn btn-primary" type="button">Create</button>
+  </a>
+</div>
+<div class="container mt-3">
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="departmnet : ${departments}">
+      <td th:text="${departments.get(id)}"></td>
+      <td th:text="${departments.name}"></td>
+      <td th:text="${departments.hospital}"></td>
+
+      <!--            <td>-->
+      <!--                <a th:href="@{/companies(id=${company.id})}">-->
+      <!--                    <button class="btn btn-primary" type="submit">edit</button>-->
+      <!--                </a>-->
+      <!--                <a th:href="@{/url/{id}(id=${peremenyi.id})}">-->
+      <!--                    <button class="btn btn-danger" type="submit">delete</button>-->
+      <!--                </a>-->
+      <!--            </td>-->
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
