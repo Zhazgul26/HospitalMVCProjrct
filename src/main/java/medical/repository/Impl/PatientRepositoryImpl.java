@@ -4,12 +4,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import medical.entity.Appointment;
 import medical.entity.Hospital;
 import medical.entity.Patient;
 import medical.repository.PatientRepository;
 import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,15 +35,8 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
-    public List<Patient> getAll() {
-        List<Patient> patients = new ArrayList<>();
-        try {
-            patients = entityManager.createQuery("select c from Patient c", Patient.class).getResultList();
-
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return patients;
+    public List<Patient> getAll(Long id) {
+       return entityManager.createQuery("select  p from Patient p where p.hospital.id = :id", Patient.class).setParameter("id",id).getResultList();
     }
 
     @Override
@@ -88,5 +83,23 @@ public class PatientRepositoryImpl implements PatientRepository {
         System.out.println(updated ? "Patient is updated successfully" : "Patient was not updated");
 
     }
+
+    @Override
+    public void assignPatient(Long appointmentId, Long patientId) throws IOException {
+        Patient patient = entityManager.find(Patient.class, patientId);
+        Appointment appointment = entityManager.find(Appointment.class, appointmentId);
+        if (appointment.getPatient()!=null){
+            for (Patient p: appointment.getHospital().getPatients()) {
+                if (p.getId() == patientId){
+                    throw new IOException("this is patient added");
+                }
+            }
+        }
+        patient.addAppointment(appointment);
+        appointment.setPatient(patient);
+        entityManager.merge(patient);
+        entityManager.merge(appointment);
     }
+
+}
 

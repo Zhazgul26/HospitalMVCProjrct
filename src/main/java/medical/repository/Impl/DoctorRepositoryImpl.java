@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import medical.entity.Appointment;
 import medical.entity.Department;
 import medical.entity.Doctor;
 import medical.entity.Hospital;
@@ -11,6 +12,7 @@ import medical.repository.DoctorRepository;
 import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,15 +38,9 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     }
 
     @Override
-    public List<Doctor> getAll() {
-        List<Doctor> doctors = new ArrayList<>();
-        try {
-            doctors = entityManager.createQuery("select c from Department c", Doctor.class).getResultList();
+    public List<Doctor> getAll(Long id) {
 
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return doctors;
+            return entityManager.createQuery("select d from Doctor d where d.hospital.id = :id", Doctor.class).setParameter("id",id).getResultList();
     }
 
     @Override
@@ -78,7 +74,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         boolean updated = false;
         try{
             Doctor doctor = entityManager.find(Doctor.class, id);
-            doctor.setFirsName(newDoctor.getFirsName());
+            doctor.setFirstName(newDoctor.getFirstName());
             doctor.setLastName(newDoctor.getLastName());
             doctor.setEmail(newDoctor.getEmail());
             doctor.setPosition(newDoctor.getPosition());
@@ -90,4 +86,21 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
     }
 
+    @Override
+    public void assignDoctor(Long appointmentId, Long doctorId) throws IOException {
+        Doctor doctor = entityManager.find(Doctor.class, doctorId);
+        Appointment appointment = entityManager.find(Appointment.class, appointmentId);
+        if(appointment.getDoctor()!=null){
+            for (Doctor d: appointment.getHospital().getDoctors()) {
+                if(d.getId() == doctorId){
+                    throw new IOException("this is have signed");
+                }
+            }
+        }
+        doctor.addAppointments(appointment);
+        appointment.setDoctor(doctor);
+        entityManager.merge(doctor);
+        entityManager.merge(appointment);
     }
+
+}

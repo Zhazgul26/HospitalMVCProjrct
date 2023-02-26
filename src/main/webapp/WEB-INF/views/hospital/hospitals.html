@@ -1,12 +1,50 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Main Page</title>
     <style>
+        body{
+            background-image: url("https://sgmh.org/wp-content/uploads/2020/01/AdobeStock_279753293.jpeg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
         .container {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            border-radius: 1rem;
+        }
+
+        .btn-container{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .btn-style{
+            border:none;
+            border-radius: 7px;
+            background-color:blue;
+            font-weight: inherit;
+            color: white;
+            padding: 10px 15px;
+            font-size: medium;
+
+        }
+
+        .submit-buttons{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+        }
+
+        .card{
+            width: 30rem;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -14,32 +52,56 @@
           crossorigin="anonymous">
 </head>
 <body>
-<div class="container" style="width: 83%; margin: 4px auto">
-    <div class="card" style="width: 43rem;"
-         th:each="hospital:${hospitals}">
+<div class="container" style="width: 78%; margin: 0 auto">
+    <div class="card" th:each="hospital:${hospitals}" >
+        <img th:src="${hospital.getImage()}" object-fit width="223" height="170px" class="card-img-top" alt="Image">
         <div class="card-body">
             <h5 class="card-title" th:text="${hospital.name}">Name</h5>
             <p class="card-text" th:text="${hospital.address}">Address</p>
-
-            <form th:method="DELETE" th:action="@{/hospitals/{id}/delete(id=${hospital.getId()})}">
-                <input type="submit" class="btn btn-outline-primary"  th:value="  Delete  "/>
-            </form>
-            <form th:method="UPDATE" th:action="@{/WEB-INF/views/hospital/hospitals.html/update(id${hospital.id})}">
-                <input type="submit" class="btn btn-outline-primary"  th:value="  Update  "/>
-            </form>
+            <div class="submit-buttons">
+                <div>
+                    <a th:href="@{/{id}/departments( id=${hospital.getId()})}">
+                        <input type="submit" class="btn btn-outline-primary"  th:value="  Department  "/>
+                    </a>
+                    <a th:href="@{/{id}/doctors(id=${hospital.getId()})}">
+                        <input type="submit" class="btn btn-outline-primary" th:value="  Doctors  "/>
+                    </a>
+                </div>
+                <div>
+                    <a th:href="@{/{id}/patients(id=${hospital.getId()})}">
+                        <input type="submit" class="btn btn-outline-primary" th:value="  Patients  "/>
+                    </a>
+                </div>
+                <div>
+                    <a th:href="@{/appointments/{id}(id=${hospital.getId()})}">
+                        <input type="submit" class="btn btn-outline-primary" th:value="  Appointment  "/>
+                    </a>
+                </div>
+                <div>
+                    <form th:method="DELETE" th:action="@{/hospitals/{id}/delete(id=${hospital.getId()})}">
+                        <input type="submit" class="btn btn-outline-primary"  th:value="  Delete  "/>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="btn-container">
+        <a class="btn btn-outline-primary btn-style" role="button" href="/hospitals/savePage">Add new Hospital</a>
+    </div>
 </div>
+
 </body>
 
-<br>
-<br>
-
-<p style="text-align:center;">
-    <a class="btn btn-outline-primary" role="button" href="/hospitals/savePage">Add new Hospital</a></p>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
 </html>
+
+
+
+
+
+
+

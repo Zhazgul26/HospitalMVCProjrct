@@ -1,32 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Save Departments</title>
 </head>
 <body>
 <div class="wrapper-btn">
-  <a th:href="@{/}">
-    <button class="btn btn-primary" type="button">back</button>
-  </a>
-  <a th:href="@{/departments/new}">
-    <button class="btn btn-primary" type="button">Create</button>
-  </a>
 </div>
 
 <div class="d-flex justify-content-center">
-  <form class="p-5 bg-light" action="#" th:action="@{/departments/new}" th:object="${department}" method="post">
-    <input type="hidden" th:field="*{#ids}">
+  <form class="p-5 bg-light" th:action="@{/{id}/departments/new (id=${hospitalId})}" th:object="${department}" method="post">
+    <input type="hidden" th:field="*{id}">
     <div class="form-group">
       <label for="nameInput" class="form-label">Name</label>
-      <input type="text" th:field="*{names}" id="nameInput" class="form-control form-control-lg">
-    </div>
-    <div class="form-group">
-      <label for="nameInput">Hospital</label>
-      <select class="form-control" id="hospital" name="hospitalId" required>
-        <option  th:each="hospital : ${hospitals}" th:value="${hospital
-        .id}" th:text="${hospital.name}"></option>
-      </select>
+      <input type="text" th:field="*{name}" id="nameInput" class="form-control form-control-lg">
     </div>
     <div>
       <input type="submit" value="Save" class="btn btn-primary btn-lg">

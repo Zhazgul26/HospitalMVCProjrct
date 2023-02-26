@@ -12,30 +12,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/departments")
+@RequestMapping("/{id}/departments")
 @RequiredArgsConstructor
 public class DepartmentController {
     private final DepartmentService departmentService;
-    private final HospitalService hospitalService;
 
     @GetMapping
-    String getAllDepartments(Model model) {
-        List<Department> departments = departmentService.getAll();
-        model.addAttribute("departments", departments);
+    String getAllDepartments(@PathVariable("id") Long id, Model model){
+
+        model.addAttribute("departments",departmentService.getAll(id));
+        model.addAttribute("hospitalId",id);
         return "department/departments";
     }
-
+    @GetMapping("/saveDepartment")
+    String save(Model model,@PathVariable("id")Long id){
+        model.addAttribute("department",new Department());
+        model.addAttribute("hospitalId",id);
+        return "/department/saveDepartment";
+    }
     @PostMapping("/new")
-    String create(@ModelAttribute("newDepartment") Department department, @RequestParam("hospitalId") Long id) throws Exception {
-        departmentService.save(id, department);
-        return "redirect:/departments";
-    }
-//
-//    @GetMapping("/saveDepartment")
-//    String save(Model model) {
-//        model.addAttribute("department", new Department());
-//        model.addAttribute("hospitals", hospitalService.getAllHospital());
-//        return "/department/saveDepartment";
+    String create(@ModelAttribute("department")Department department, @PathVariable("id") Long id) throws Exception {
+        departmentService.save(id,department);
+        return "redirect:/{id}/departments";
     }
 
 
+
+
+
+
+
+
+
+
+
+}

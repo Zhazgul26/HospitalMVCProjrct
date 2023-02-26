@@ -1,15 +1,13 @@
 package medical.entity;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import medical.entity.Department;
-import medical.entity.Doctor;
-import medical.entity.Patient;
 
 import java.time.LocalDate;
 
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
@@ -26,12 +24,23 @@ public class Appointment {
     private LocalDate date;
 
 
-    @ManyToOne(fetch = EAGER)
+    @ManyToOne(cascade = {REFRESH, DETACH, MERGE, PERSIST})
     private Patient patient;
-
-    @ManyToOne(fetch = EAGER)
+    @ManyToOne(cascade = {REFRESH, DETACH, MERGE, PERSIST})
     private Doctor doctor;
-
-    @OneToOne(fetch = EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {REFRESH, DETACH, MERGE, PERSIST})
     private Department department;
+    @ManyToOne(cascade = {REFRESH,PERSIST,DETACH,MERGE},fetch = FetchType.LAZY)
+    private Hospital hospital;
+
+    @Transient
+    private Long patientId;
+    @Transient
+    private Long doctorId;
+    @Transient
+    private Long departmentId;
+    public Appointment(LocalDate date) {
+        this.date = date;
+    }
+
 }

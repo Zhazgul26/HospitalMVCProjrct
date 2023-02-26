@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:margin-top="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment </title>
+</head>
+<body>
+<div class="wrapper-btn">
+    <a th:href="@{/hospitals/profile/{id}(id=${hospitalId})}">
+        <button class="btn btn-primary" ><~~</button>
+    </a>
+</div>
+<h4>Appointment</h4>
+<table class="table">
+    <thead >
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col"> time </th>
+        <th scope="col"> patients </th>
+        <th scope="col"> departments </th>
+        <th scope="col"> doctors </th>
+
+    </tr>
+    </thead >
+    <tbody>
+    <tr th:each="appointment : ${ appointments}" >
+        <td th:text="${appointment.id}">id</td>
+        <td  th:text="${appointment.date}">  time</td>
+        <td  th:text="${appointment.patient.firstName}">  patient</td>
+        <td  th:text="${appointment.department.name}">  department</td>
+        <td th:text="${appointment.doctor.firstName}">  doctor</td>
+        <td>
+            <form th:method="DELETE" th:action="@{/appointments/deleteAppointment/{hospitalId}/{appointmentId}(hospitalId=${hospitalId},appointmentId=${appointment.id})}">
+                <input type="submit" value="DELETE">
+            </form>
+        </td>
+        <td>
+            <form th:method="GET" th:action="@{/appointments/editAppointment/{hospitalId}/{appointmentId}(appointmentId=${appointment.id},hospitalId=${hospitalId})}">
+                <input type="submit" value="UPDATE">
+            </form>
+        </td>
+
+
+    </tr>
+
+
+    </tbody>
+</table>
+
+</body>
+</html>

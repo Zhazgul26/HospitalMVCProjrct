@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface AppointmentRepository {
 
-    Appointment save(Appointment appointment);
-    List<Appointment> getAll();
-    void deleteById(Long id);
+    String save(Appointment appointment);
+
     Appointment getById(Long id);
-    void update (Long id, Appointment newAppointment);
+
+    List<Appointment> getAll(Long id);
+
+    void update(Long id, Appointment newAppointment);
+
+    void delete(Long id);
 }
