@@ -1,73 +1,56 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-
-    <style>
-        body{
-            background-image: url("https://thumbs.dreamstime.com/b/hospital-departments-icons-set-vector-illustrations-white-background-hospital-departments-icons-set-vector-illustrations-142980785.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-    </style>
     <meta charset="UTF-8">
-    <title>Departments</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-          rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-          crossorigin="anonymous">
+    <title>Title</title>
+</head>
 
+<body>
+
+<div style="display: block; margin: 100px">
+    <div style="text-align: center">
+        <a th:href="@{/hospitals}">
+            <button class="button1" style="font-size: 20px; margin: auto"> Back</button>
+        </a>
+    </div>
+</div>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Card Effect</title>
 </head>
 <body>
-<div class="wrapper-btn">
+<div th:each="department:${departments}">
+            <div>
+                <i></i>
+                <h3 th:text="${department.getName()}">Department</h3>
+            </div>
+            <div>
+                <td><a th:href="@{/departments/edit/{departmentId}(departmentId=${department.getId()})}">
+                    <button>Update</button>
+                </a>
+                <br>
+                <br>
+                <td><a>
+                    <form th:method="DELETE" th:action="@{/departments/{id}/{hosId}(id=${department.getId()},hosId=${hospitalId})}">
+                        <button>Delete</button>
+                    </form>
+                </a>
 
-    <a th:href="@{/url}">
-        <button class="btn btn-primary" type="button">back</button>
-    </a>
-    <a th:href="@{/{id}/departments/saveDepartment (id=${hospitalId})}">
-        <button class="btn btn-primary" type="button">Create</button>
-    </a>
-
+            </div>
+        </div>
+    </div>
 </div>
-<div class="container mt-3">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Hospital</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="department : ${departments}" >
-            <td th:text="${department.id}"></td>
-            <td th:text="${department.name}"></td>
-            <td th:text="${department.hospital.name}"></td>
-
-
-
-
-        </tr>
-        </tbody>
-    </table>
+<div style="text-align: center">
+    <a th:href="@{/departments/{id}/newDepartment(id=${hospitalId})}">
+        <button style="font-size: 30px;">add new departments</button>
+    </a>
 </div>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</body>
+</html>
