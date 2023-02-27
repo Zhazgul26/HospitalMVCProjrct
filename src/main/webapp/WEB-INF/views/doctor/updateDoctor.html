@@ -12,13 +12,13 @@
 <form th:method="POST" th:action="@{/doctors/{id}/{doctorId}/update (id=${doctor.getId()},doctorId=${doctor.id})}" th:object="${doctor}">
     <br>
     <div>
-        <input required="required" placeholder="Exam:Ulukbek" type="text" th:field="*{firstName}" >
+        <input required="required" placeholder="Exam:Zhazgul" type="text" th:field="*{firstName}" >
         <span>FirstName</span>
         <i></i>
     </div>
     <br>
     <div>
-        <input required="required" placeholder="Exam:Kochkorov" type="text" th:field="*{lastName}" >
+        <input required="required" placeholder="Exam:Zhoroeva" type="text" th:field="*{lastName}" >
         <span>LastName</span>
         <i></i>
     </div>
