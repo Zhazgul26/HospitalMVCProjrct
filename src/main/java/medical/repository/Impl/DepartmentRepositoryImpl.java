@@ -116,7 +116,13 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
         entityManager.merge(department);
         entityManager.merge(appointment);
     }
+
+    @Override
+    public void assignDoctor(Doctor doctor) {
+        entityManager.merge(doctor);
+
     }
+}
 
 
 

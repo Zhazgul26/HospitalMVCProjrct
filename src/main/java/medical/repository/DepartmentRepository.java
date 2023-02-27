@@ -1,6 +1,7 @@
 package medical.repository;
 
 import medical.entity.Department;
+import medical.entity.Doctor;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +16,7 @@ public interface DepartmentRepository {
 
     void assignDepartment(Long doctorId, Long departmentId) throws IOException;
     void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException;
+    void assignDoctor(Doctor doctor);
 
 }
 

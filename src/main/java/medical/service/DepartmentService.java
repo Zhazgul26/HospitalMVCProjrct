@@ -1,6 +1,7 @@
 package medical.service;
 
 import medical.entity.Department;
+import medical.entity.Doctor;
 import medical.entity.Hospital;
 
 import java.io.IOException;
@@ -17,7 +18,6 @@ public interface DepartmentService {
 
     void update(Long id, Department newDepartment);
 
-    void assignDepartment(Long doctorId, Long departmentId) throws IOException;
-    void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException;
+    public void assignDoctor(Long doctorId, Doctor doctor) ;
 
-}
+    }

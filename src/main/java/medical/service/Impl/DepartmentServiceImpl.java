@@ -3,13 +3,14 @@ package medical.service.Impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import medical.entity.Department;
+import medical.entity.Doctor;
 import medical.entity.Hospital;
 import medical.repository.DepartmentRepository;
+import medical.repository.DoctorRepository;
 import medical.repository.HospitalRepository;
 import medical.service.DepartmentService;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
     private final HospitalRepository hospitalRepository;
-
+private final DoctorRepository doctorRepository;
 
     @Override
     public Department save(Long id ,Department department) {
@@ -50,14 +51,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentRepository.update(id, newDepartment);
     }
 
-    @Override
-    public void assignDepartment(Long doctorId, Long departmentId) throws IOException {
 
-
-    }
 
     @Override
-    public void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException {
-
+    public void assignDoctor(Long doctorId, Doctor doctor) {
+        Department department = departmentRepository.getById(doctor.getDepartmentId());
+        Doctor oldDoctor = doctorRepository.getById(doctorId);
+        oldDoctor.addDepartment(department);
+        department.addDoctor(oldDoctor);
+        departmentRepository.assignDoctor(oldDoctor);
     }
 }

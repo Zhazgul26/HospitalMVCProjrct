@@ -75,4 +75,6 @@ public class Doctor {
         this.position = position;
         this.email = email;
     }
+    @Transient
+    private Long departmentId;
 }

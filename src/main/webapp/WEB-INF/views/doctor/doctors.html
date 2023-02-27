@@ -1,85 +1,136 @@
 <!DOCTYPE html>
-<html lang="en" ang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Doctors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+          crossorigin="anonymous">
+    <style>
+
+        *, *:before, *:after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: white;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        table {
+            background: #ad95c7;
+            border-radius: 0.25em;
+            border-collapse: collapse;
+            /*margin: 0 auto;*/
+            /*margin-top: 250px;*/
+            width: 100%;
+            height: 900px
+        }
+
+        th {
+            border-bottom: 1px solid #364043;
+            color: rgba(224, 182, 90, 0.97);
+            font-size: 0.85em;
+            font-weight: 600;
+            padding: 0.5em 1em;
+            text-align: left;
+        }
+
+        td {
+            color: white;
+            font-weight: 400;
+            padding: 0.65em 1em;
+        }
+
+        .disabled td {
+            color: #4F5F64;
+        }
+
+        tbody tr {
+            transition: background 0.25s ease;
+        }
+
+        /*tbody tr:hover {*/
+        /*    background: #014055;*/
+        /*}*/
+
+        button {
+            background-color: dimgray;
+            color: white;
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            border: none
+
+        }
+
+        input {
+            background-color: dimgray;
+            border-radius: 5px;
+            color: white;
+            width: 100px;
+            height: 40px;
+        }
+
+        button:hover {
+            background: darkblue;
+        }
+
+    </style>
+
 </head>
 <body>
-
-<div style="text-align: center">
-    <a th:href="@{/hospitals}">
-        <button style="font-size: 20px;  margin: auto"> Back</button>
-    </a>
-</div>
-
-<div th:each="doctor:${doctors}">
-    <div>
-            <p th:text="${doctor.getEmail()}" >Doctor Email</p>
-
-        <div>
-
-            <div th:text="${doctor.getFirstName()}">
-                First Name
-            </div>
-
-            <div th:text="${doctor.getLastName()}">
-                Last Name
-            </div>
-
-        </div>
-
-        <div th:text="${doctor.getPosition()}">
-            Position
-        </div>
-        <br>
+<table>
+    <thead class="table-dark">
+    <tr>
+        <th>Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Position</th>
+        <th>email</th>
+        <th>Hospital</th>
+        <th>Assign Department</th>.
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody class="table-success">
+    <tr th:each="doctor : ${doctors}">
+        <td th:text="${doctor.id}"></td>
+        <td th:text="${doctor.firsName}"></td>
+        <td th:text="${doctor.lastName}"></td>
+        <td th:text="${doctor.position}"></td>
+        <td th:text="${doctor.email}"></td>
+        <td th:text="${doctor.hospital.name}"></td>
 
 
-
-
-
-        <td>
-            <form th:method="POST"
-                  th:action="@{/doctors/{doctorId}/assignDepartment(doctorId=${doctor.getId()})}">
-                <select style="width: 90px" name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
-                        th:object="${department}"
-                        th:field="*{id}">
-                    <option th:each="department : ${departments}"
-                            th:value="${department.id}"
-                            th:text="${department.name}"></option>
-                </select>
-                <input type="submit" name="text" class="input" value="sumbit" placeholder="Type here...">
-            </form>
-        </td>
-
-
-        <br>
-        <td><a th:href="@{/doctors/edit/{doctorId}(doctorId=${doctor.getId()})}">
+        <td><a>
+            <a th:href="@{/{id}/doctors/{doctorId}/departments(id=${hospitalId}, doctorId=${doctor.id})}">
+                <input type="submit" class="btn btn-outline-primary" th:value="  Departments  ">
+            </a>
+        </a></td>
+        <td><a th:href="@{/update/{id}(id=${doctor.id})}">
             <button>Update</button>
         </a>
-        <br>
-
-        <td><a >
-            <form th:method="DELETE" th:action="@{/doctors/{id}/{hosId}(id=${doctor.getId()},hosId=${hospitalId})}">
-                <button>Delete</button>
-            </form>
+        </td>
+        <td><a th:method="GET"
+               th:href="@{/{id}/doctors{doctorId}/delete(id=${hospitalId},doctorId=${doctor.id})}">
+            <button>Delete</button>
         </a>
-
-    </div>
-</div>
-<br>
-<br>
-<br>
-<br>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br><br><br><br>
 <div style="text-align: center">
-    <a th:href="@{/doctors/{id}/newDoctor(id=${hospitalId})}">
-        <button style="font-size: 30px;">add new doctors</button>
+    <a th:href="@{/instructors/{id}/adddoctor(id=${hospitalId})}">
+        <button style="font-size: 25px; height: 40px;width: 200px; margin-bottom:50px; border-radius: 5px"> Add Doctor
+        </button>
     </a>
 </div>
-<br>
-<br>
-<br>
-<br>
-
 </body>
+
 </html>

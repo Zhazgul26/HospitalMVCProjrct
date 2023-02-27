@@ -1,64 +1,49 @@
 package medical.controller;
 
+
+import lombok.RequiredArgsConstructor;
 import medical.entity.Department;
 import medical.service.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import medical.service.HospitalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @Controller
-@RequestMapping("/departments")
+@RequestMapping("/{id}/departments")
+@RequiredArgsConstructor
 public class DepartmentController {
-
     private final DepartmentService departmentService;
 
-    @Autowired
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
+    @GetMapping
+    String getAllDepartments(@PathVariable("id") Long id, Model model){
 
-    @GetMapping("/{id}")
-    public String getAllDepartments(@PathVariable Long id, Model model){
         model.addAttribute("departments",departmentService.getAll(id));
         model.addAttribute("hospitalId",id);
         return "department/departments";
     }
-
-    @GetMapping("/{id}/newDepartment")
-    public String createDepartment(@PathVariable Long id,Model model){
-        model.addAttribute("newDepartment",new Department());
+    @GetMapping("/saveDepartment")
+    String save(Model model,@PathVariable("id")Long id){
+        model.addAttribute("department",new Department());
         model.addAttribute("hospitalId",id);
-        return "department/addDepartment";
+        return "/department/saveDepartment";
     }
-
-    @PostMapping("/{id}/saveDepartment")
-    public String saveDepartment(@ModelAttribute("newDepartment") Department department,@PathVariable("id") Long id){
+    @PostMapping("/new")
+    String create(@ModelAttribute("department")Department department, @PathVariable("id") Long id) throws Exception {
         departmentService.save(id,department);
-        return "redirect:/departments/" +id;
+        return "redirect:/{id}/departments";
     }
 
-    @GetMapping("/edit/{id}")
-    public String updateDepartment(@PathVariable Long id, Model model){
-        Department department = departmentService.getById(id);
-        model.addAttribute("department",department);
-        model.addAttribute("hospitalId",department.getHospital().getId());
-        return "department/updateDepartment";
-    }
 
-    @PostMapping("/{id}/{departmentId}/update")
-    public String saveUpdateDepartment(@ModelAttribute("department") Department department,
-                                       @PathVariable("departmentId") Long departmentId,
-                                       @PathVariable("id") Long id){
-        departmentService.update(departmentId,department);
-        return "redirect:/departments/" +id;
-    }
 
-    @DeleteMapping("/{id}/{hosId}")
-    public String deleteByDepartmentId(@PathVariable("id") Long id,
-                                       @PathVariable("hosId") Long hosId){
-        departmentService.deleteById(id);
-        return "redirect:/departments/" + hosId;
-    }
+
+
+
+
+
+
+
+
 }
