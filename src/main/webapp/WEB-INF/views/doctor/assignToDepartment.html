@@ -12,7 +12,9 @@
         <div class="form-group">
             <select style="text-align:center;" th:field="*{departmentId}" class="date-input">
                 <option value="">select department</option>
-                <option class="date-input" th:each="department : ${departments}" th:value="${department.getId()}" th:text="${department.getName()}"></option>
+                <option class="date-input" th:each="department : ${departments}" th:value="${department.getId()}" th:text="${department.getName()}">
+
+                </option>
             </select>
 
         </div>

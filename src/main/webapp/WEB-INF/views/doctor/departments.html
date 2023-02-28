@@ -20,7 +20,7 @@
         <th th:text="${department.getId()}"></th>
         <td th:text="${department.getName()}"></td>
         <td>
-            <form th:method="DELETE" th:action="@{/{id}/doctors/{doctorId}/{departmentId}/delete(id=${id}, doctorId=${doctorId}, departmentId=${department.getId()})}">
+            <form th:method="DELETE" th:action="@{/{id}/doctors/{doctorId}/{departmentId}/delete(id=${id}, doctorId=${doctorId}, departmentId=${department.getId()})} ">
                 <input type="submit" class="btn btn-outline-primary"  th:value="  Delete  ">
             </form>
         </td>

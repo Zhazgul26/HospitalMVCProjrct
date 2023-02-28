@@ -33,8 +33,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/new")
-    String create(@ModelAttribute("department") Department department,
-                  @PathVariable("id") Long id) throws Exception {
+    String create(@ModelAttribute("department") Department department, @PathVariable("id") Long id) throws Exception {
         departmentService.save(id, department);
         return "redirect:/{id}/departments";
     }
@@ -45,8 +44,7 @@ public class DepartmentController {
         return "redirect:/{id}/departments";
     }
     @GetMapping("/{departmentId}/edit")
-    String getUpdate(@PathVariable("departmentId") Long departmentId, Model model,
-                     @PathVariable("id") Long id) {
+    String getUpdate(@PathVariable("departmentId") Long departmentId, Model model,@PathVariable("id") Long id) {
         model.addAttribute("department",departmentService.getById(departmentId));
         model.addAttribute("hospitalId",id);
         return "department/updateDepartment";

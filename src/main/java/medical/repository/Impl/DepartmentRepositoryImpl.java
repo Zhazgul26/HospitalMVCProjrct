@@ -23,15 +23,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     private EntityManager entityManager;
 
     @Override
-    public Department save(Department department) {
-        try {
-            entityManager.persist(department);
-            return department;
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return null;
+    public void save(Department department) {
+
+        entityManager.persist(department);
     }
+
 
     @Override
     public List<Department> getAll(Long id) {
@@ -42,28 +38,14 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     @Override
     public void deleteById(Long id) {
-        boolean delete = false;
-        try {
-            Department department = entityManager.find(Department.class, id);
-            entityManager.remove(entityManager.merge(department));
-            delete = true;
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        System.out.println(delete ? "Department  Deleted Successfully" : "Department was not deleted");
+        Department department = entityManager.find(Department.class, id);
+        entityManager.remove(department);
     }
-
 
     @Override
     public Department getById(Long id) {
-        try {
-            Department department = entityManager.find(Department.class, id);
-            return department;
+        return entityManager.find(Department.class,id);
 
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return null;
     }
 
     @Override

@@ -35,7 +35,7 @@
             <th>Position</th>
             <th>email</th>
             <th>Hospital</th>
-            <th>Assign Department</th>.
+            <th>Assign Department</th>
             <th>Update</th>
             <th>Delete</th>
         </tr>
@@ -48,6 +48,7 @@
             <td th:text="${doctor.position}"></td>
             <td th:text="${doctor.email}"></td>
             <td th:text="${doctor.hospital.name}"></td>
+            <br>
             <td>
             <td>
                 <a th:href="@{/{id}/doctors/{doctorId}/departments(id=${hospitalId}, doctorId=${doctor.id})}">

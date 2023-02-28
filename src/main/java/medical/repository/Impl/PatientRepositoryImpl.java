@@ -35,17 +35,9 @@ public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
     public void deleteById(Long id) {
-        boolean delete = false;
-        try {
-            Patient patient = entityManager.find(Patient.class, id);
-            entityManager.remove(entityManager.merge(patient));
-            delete = true;
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-        System.out.println(delete ? "Patient Deleted Successfully": "Patient was not deleted");
+        Patient patient = entityManager.find(Patient.class,id);
+        entityManager.remove(patient);
     }
-
 
     @Override
     public Patient getById(Long id) {

@@ -57,11 +57,13 @@ private final AppointmentRepository appointmentRepository;
         Doctor doctor = getById(id);
         Hospital hospital = doctor.getHospital();
         List<Appointment> appointments = doctor.getAppointments();
+
         doctor.setDepartments(null);
         appointments.forEach(appointment -> appointment.getDoctor().setAppointments(null));
         appointments.forEach(appointment -> appointment.getPatient().setAppointments(null));
         appointments.forEach(appointment -> appointment.getDepartment().setDoctors(null));
         appointments.forEach(appointment -> appointment.getDoctor().setDepartments(null));
+        
         hospital.getAppointments().removeAll(appointments);
         for (int i = 0; i < appointments.size(); i++) {
             appointmentRepository.delete(appointments.get(i).getId());
