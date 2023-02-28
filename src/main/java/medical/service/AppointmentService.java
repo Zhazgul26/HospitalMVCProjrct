@@ -9,14 +9,14 @@ import java.util.List;
 public interface AppointmentService {
 
 
-    void save(Long id,Appointment appointment);
+    void save(Long hospitalId,Long patientId, Long doctorId, Long departmentId,Appointment appointment);
 
     Appointment getById(Long id);
 
     List<Appointment> getAll(Long id);
 
-    void update(Long id, Appointment newAppointment);
+    Appointment update(Long hospitalId, Long patientId, Long doctorId, Long departmentId,Appointment appointment,Long appointmentId);
 
-    void delete(Long id);
+    void delete(Long appointmentId);
 
 }

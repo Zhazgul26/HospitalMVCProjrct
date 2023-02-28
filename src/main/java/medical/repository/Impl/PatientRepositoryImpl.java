@@ -23,15 +23,9 @@ public class PatientRepositoryImpl implements PatientRepository {
     private EntityManager entityManager;
 
     @Override
-    public Patient save(Patient patient) {
-        try {
-            entityManager.persist(patient);
-            return patient;
-        } catch (
-                HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return null;
+    public void save(Patient patient) {
+        entityManager.persist(patient);
+
     }
 
     @Override
@@ -55,51 +49,15 @@ public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
     public Patient getById(Long id) {
-        try{
-            Patient patient = entityManager.find(Patient.class,id );
-            return patient;
-
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-
-        return null;
+        return entityManager.find(Patient.class, id);
     }
+
 
     @Override
-    public void update(Long id, Patient newPatient) {
-        boolean updated = false;
-        try{
-            Patient patient = entityManager.find(Patient.class, id);
-            patient.setFirstName(newPatient.getFirstName());
-            patient.setLastName(newPatient.getLastName());
-            patient.setGender(newPatient.getGender());
-            patient.setPhoneNumber(newPatient.getPhoneNumber());
-            patient.setEmail(newPatient.getEmail());
-            entityManager.merge(patient);
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-        System.out.println(updated ? "Patient is updated successfully" : "Patient was not updated");
-
+    public Patient update( Patient newPatient) {
+        return entityManager.merge(newPatient);
     }
 
-    @Override
-    public void assignPatient(Long appointmentId, Long patientId) throws IOException {
-        Patient patient = entityManager.find(Patient.class, patientId);
-        Appointment appointment = entityManager.find(Appointment.class, appointmentId);
-        if (appointment.getPatient()!=null){
-            for (Patient p: appointment.getHospital().getPatients()) {
-                if (p.getId() == patientId){
-                    throw new IOException("this is patient added");
-                }
-            }
-        }
-        patient.addAppointment(appointment);
-        appointment.setPatient(patient);
-        entityManager.merge(patient);
-        entityManager.merge(appointment);
-    }
 
 }
 

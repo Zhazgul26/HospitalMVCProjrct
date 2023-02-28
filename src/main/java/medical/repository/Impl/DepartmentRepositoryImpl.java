@@ -67,55 +67,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public void update(Long id, Department newDepartment) {
-        boolean updated = false;
-        try {
-            Department department = entityManager.find(Department.class, id);
-            department.setName(newDepartment.getName());
-            department.setDoctors(newDepartment.getDoctors());
-            department.setHospital(newDepartment.getHospital());
-            entityManager.merge(department);
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        System.out.println(updated ? "Department is updated successfully" : "Department was not updated");
-
-    }
-
-    @Override
-    public void assignDepartment(Long doctorId, Long departmentId) throws IOException {
-        Department department = entityManager.find(Department.class, departmentId);
-        Doctor doctor = entityManager.find(Doctor.class, doctorId);
-        if (doctor.getDepartments() != null){
-            for (Department d: doctor.getDepartments()) {
-                if(d.getId() == departmentId){
-                    throw new IOException("this is departmen added");
-                }
-            }
-        }
-        department.addDoctor(doctor);
-        doctor.addDepartment(department);
-        entityManager.merge(department);
-        entityManager.merge(doctor);
+    public void update(Department newDepartment) {
+        entityManager.merge(newDepartment);
     }
 
 
-    @Override
-    public void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException {
-        Department department = entityManager.find(Department.class, departmentId);
-        Appointment appointment = entityManager.find(Appointment.class, appointmentId);
-        if (appointment.getDepartment() != null){
-            for (Department d: appointment.getHospital().getDepartments()) {
-                if (d.getId() == departmentId){
-                    throw  new IOException("this is assigned");
-                }
-            }
-        }
-        department.addAppointment(appointment);
-        appointment.setDepartment(department);
-        entityManager.merge(department);
-        entityManager.merge(appointment);
-    }
 
     @Override
     public void assignDoctor(Doctor doctor) {

@@ -38,12 +38,25 @@ public class PatientController {
         return "/patient/savePatient";
     }
     @PostMapping("/new")
-    String create(@ModelAttribute("newPatient")Patient patient, @PathVariable("id") Long id) throws Exception {
+    String create(@ModelAttribute("patient")Patient patient, @PathVariable("id") Long id) throws Exception {
         patientService.save(id,patient);
         return "redirect:/{id}/patients";
     }
+    @GetMapping("/{patientId}/edit")
+    String getUpdate(@PathVariable("patientId") Long patientId, Model model,@PathVariable("id") Long id) {
+        model.addAttribute("patient",patientService.getById(patientId));
+        model.addAttribute("hospitalId",id);
+        return "patient/updatePatient";
+    }
 
+    @PostMapping("/{patientId}/up")
+    String updatePatient(@PathVariable("patientId") Long patientId, @ModelAttribute("patient") Patient patient) {
+        patientService.update(patientId,patient);
+        return "redirect:/{id}/patients";
+    }
+    @DeleteMapping("{patientId}/delete")
+    String delete (@PathVariable("patientId") Long patientId) {
+        patientService.delete(patientId);
+        return "redirect:/{id}/patients";
+    }
 }
-
-
-

@@ -1,5 +1,6 @@
 package medical.service;
 
+import medical.entity.Department;
 import medical.entity.Doctor;
 import medical.entity.Hospital;
 
@@ -8,15 +9,18 @@ import java.io.IOException;
 import java.util.List;
 
 public interface DoctorService {
-    Doctor save(Long id,Doctor doctor);
+    void save(Long id,Doctor newDoctor);
     List<Doctor> getAll(Long id);
 
-    void deleteById(Long id);
+
 
     Doctor getById(Long id);
 
-    void update(Long id, Doctor newDoctor);
+    Doctor update(Long doctorId,Doctor doctor);
+    void deleteById(Long id);
 
-    void assignDoctor(Long appointmentId, Long doctorId) throws IOException;
+    List<Department> getAllDepartmentDoctorById(Long doctorId);
+
+
 
 }

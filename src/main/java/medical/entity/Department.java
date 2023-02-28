@@ -1,6 +1,7 @@
 package medical.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Setter
 @NoArgsConstructor
 @Table(name = "departments")
+@EqualsAndHashCode
 public class Department {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "department_id_gen")
@@ -29,30 +31,18 @@ public class Department {
 
 
     @ManyToMany(mappedBy = "departments", cascade = {PERSIST, MERGE, DETACH, REFRESH}, fetch = FetchType.LAZY)
-    private List<Doctor> doctors = new ArrayList<>();
-
+    private List<Doctor> doctors;
+    public void addDoctor(Doctor doctor) {
+        if (doctors == null) {
+            doctors = new ArrayList<>();
+        } else {
+            doctors.add(doctor);
+        }
+    }
     @ManyToOne(cascade = {REFRESH, DETACH, MERGE, PERSIST}, fetch = FetchType.LAZY)
     private Hospital hospital;
 
-    @OneToMany(cascade = {REFRESH,MERGE,DETACH,PERSIST,REMOVE},fetch = FetchType.EAGER,mappedBy = "department")
-    private List<Appointment> appointments = new ArrayList<>();
-
-    @Transient
-    private Long hospitalId;
-
-    public Department(String name) {
-        this.name = name;
     }
 
-    public void addDoctor(Doctor doctor) {
-        doctors = new ArrayList<>();
-        doctors.add(doctor);
-    }
-    public void addAppointment(Appointment appointment) {
-        if (appointments == null) {
-            appointments = new ArrayList<>();
-        }
-        appointments.add(appointment);
 
-    }
-}
+

@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Save</title>
-
+    <title>Update</title>
     <style>
         *,
         body {
@@ -17,7 +15,7 @@
         html,
         body {
             height: 100%;
-            background-color: #c0a6da;
+            background-color: #d3c0e7;
             overflow: hidden;
         }
         .form-holder {
@@ -43,7 +41,7 @@
             padding: 60px;
         }
         .form-content .form-items {
-            border: 3px solid #8c67c1;
+            border: 3px solid #fff;
             padding: 40px;
             display: inline-block;
             width: 100%;
@@ -158,24 +156,36 @@
         <div class="form-holder">
             <div class="form-content">
                 <div class="form-items">
-                    <h3>Register Today</h3>
+                    <h3>Update Appointment</h3>
                     <p>Fill in the data below.</p>
-                    <form class="requires-validation" th:action="@{/{id}/doctors/new (id = ${hospitalId})}" th:object="${doctor}" method="post">
+                    <form class="requires-validation" th:action="@{/{id}/appointments/{appointmentId}/up(id=${hospitalId},appointmentId=${appointment.id})}" th:object="${appointment}" method="post">
                         <input type="hidden" th:field="*{id}">
-                        <div class="col-md-12">
-                            <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}" id="image-input">
+                        <div class="form-group">
+                            <label for="nameInput" class="form-label">Date</label>
+                            <input type="date" th:field="*{date}" id="nameInput" class="form-control form-control-lg">
                         </div>
-                        <div class="col-md-12">
-                            <input class="form-control" type="text" name="name" placeholder=" Last Name" th:field="*{lastName}" id="input-name">
+                        <div class="form-group">
+                            <label for="patient">Patient</label>
+                            <select class="form-control" id="patient" name="patientId" required>
+                                <option  th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.firstName}"></option>
+                            </select>
+                            <div class="form-group">
+                                <label for="doctor">Doctor</label>
+                                <select class="form-control" id="doctor" name="doctorId" required>
+                                    <option  th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.firstName}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select class="form-control" id="department" name="departmentId" required>
+                                <option  th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}"></option>
+                            </select>
+                        </div>
 
-                        </div>
-                        <div class="col-md-12">
-                            <input class="form-control" type="text"  placeholder="position" th:field="*{position}" id="input-position">
-                        </div> <div class="col-md-12">
-                            <input class="form-control" type="text"  placeholder="email" th:field="*{email}" id="input-email">
-                        </div>
+
                         <div class="form-button mt-3">
-                            <button id="submit" type="submit" class="btn btn-primary">Save</button>
+                            <button id="submit" type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>
@@ -184,4 +194,5 @@
     </div>
 </div>
 </body>
+
 </html>

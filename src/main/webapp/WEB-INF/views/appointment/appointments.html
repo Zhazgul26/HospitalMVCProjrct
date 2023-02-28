@@ -39,7 +39,15 @@
         <td th:text="${appointment.department.name}"></td>
         <td th:text="${appointment.department.hospital.name}"></td>
         <td>
-
+            <a th:href="@{/{id}/appointments/{appointmentId}/edit(id=${hospitalId},appointmentId=${appointment.id})}">
+                <input type="submit" class="btn btn-outline-primary"  th:value="  Update  ">
+            </a>
+            <a>
+                <form th:method="DELETE"
+                      th:action="@{/{id}/appointments/{appointmentId}/delete(id=${hospitalId}, appointmentId=${appointment.id})}">
+                    <input type="submit" class="btn btn-outline-primary" th:value="  Delete  "></input>
+                </form>
+            </a>
     </tr>
     <a th:href="@{/{id}/appointments/saveAppointment (id=${hospitalId})}">
         <button class="btn btn-primary" type="button">Save</button>

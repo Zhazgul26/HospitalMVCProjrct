@@ -23,7 +23,7 @@ public class HospitalController {
     }
 
     @PostMapping("/new")
-    String create(@ModelAttribute("newHospital") Hospital hospital) {
+    String create(@ModelAttribute("hospital") Hospital hospital) {
         hospitalService.save(hospital);
         return "redirect:/hospitals";
     }
@@ -40,4 +40,15 @@ public class HospitalController {
         return "redirect:/hospitals";
     }
 
+    @GetMapping("/{id}/edit")
+    String getUpdate(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("hospital", hospitalService.getById(id));
+        return "hospital/updateHospital";
+    }
+
+    @PostMapping("/{id}/up")
+    String updateHospital(@PathVariable("id") Long id, @ModelAttribute("hospital") Hospital hospital) {
+        hospitalService.update(id, hospital);
+        return "redirect:/hospitals";
+    }
 }

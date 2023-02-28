@@ -8,16 +8,15 @@ import java.io.IOException;
 import java.util.List;
 
 public interface DepartmentService {
-    Department save(Long id,Department department);
+    void save(Long id,Department department);
 
     List<Department> getAll(Long id);
 
-    void deleteById(Long id);
 
     Department getById(Long id);
 
-    void update(Long id, Department newDepartment);
-
+    void update(Long departmentId,Department department);
+    void deleteById(Long id);
     public void assignDoctor(Long doctorId, Doctor doctor) ;
 
     }

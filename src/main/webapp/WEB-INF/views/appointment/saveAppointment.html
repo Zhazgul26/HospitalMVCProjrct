@@ -27,7 +27,7 @@
             <div class="form-group">
                 <label for="doctor">Doctor</label>
                 <select class="form-control" id="doctor" name="doctorId" required>
-                    <option  th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.firsName}"></option>
+                    <option  th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.firstName}"></option>
                 </select>
             </div>
         </div>

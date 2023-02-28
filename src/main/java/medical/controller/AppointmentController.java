@@ -16,7 +16,7 @@ public class AppointmentController {
     private final PatientService patientService;
     private final DoctorService doctorService;
     private final DepartmentService departmentService;
-    private final HospitalService hospitalService;
+
 
     @GetMapping
     String getAllAppointments(@PathVariable("id") Long id, Model model){
@@ -34,10 +34,27 @@ public class AppointmentController {
         return "appointment/saveAppointment";
     }
     @PostMapping("/new")
-    String create(@ModelAttribute("appointment") Appointment appointment, @RequestParam("patientId")Long patientId, @RequestParam("doctorId")Long doctorId,
-                  @RequestParam("departmentId") Long departmentId, @PathVariable("id") Long hospitalId ){
-
-        appointmentService.save(hospitalId,appointment);
+    String create(@ModelAttribute("appointment") Appointment appointment,@RequestParam("patientId")Long patientId,@RequestParam("doctorId")Long doctorId, @RequestParam("departmentId") Long departmentId,@PathVariable("id") Long hospitalId ){System.out.println("sasdd");
+        appointmentService.save(hospitalId,patientId,doctorId,departmentId,appointment);
+        return "redirect:/{id}/appointments";
+    }
+    @GetMapping("/{appointmentId}/edit")
+    public String getUpdate(@PathVariable("id") Long id, @PathVariable("appointmentId") Long appointmentId, Model model){
+        model.addAttribute("appointment", appointmentService.getById(appointmentId));
+        model.addAttribute("doctors", doctorService.getAll(id));
+        model.addAttribute("patients", patientService.getAll(id));
+        model.addAttribute("departments", departmentService.getAll(id));
+        model.addAttribute("hospitalId",id);
+        return "appointment/updateAppointment";
+    }
+    @PostMapping("/{appointmentId}/up")
+    public String update(@ModelAttribute("appointment") Appointment appointment,@RequestParam("patientId")Long patientId,@RequestParam("doctorId")Long doctorId, @RequestParam("departmentId") Long departmentId,@PathVariable("id") Long hospitalId ,@PathVariable("appointmentId") Long appointmentId){
+        appointmentService.update(hospitalId,patientId,doctorId,departmentId,appointment,appointmentId);
+        return "redirect:/{id}/appointments";
+    }
+    @DeleteMapping("{appointmentId}/delete")
+    String delete (@PathVariable("appointmentId") Long appointmentId) {
+        appointmentService.delete(appointmentId);
         return "redirect:/{id}/appointments";
     }
 }

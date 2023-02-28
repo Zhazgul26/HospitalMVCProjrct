@@ -2,16 +2,15 @@ package medical.service.Impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import medical.entity.Appointment;
 import medical.entity.Hospital;
 import medical.entity.Patient;
+import medical.repository.AppointmentRepository;
 import medical.repository.HospitalRepository;
 import medical.repository.PatientRepository;
 import medical.service.PatientService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -21,13 +20,14 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final HospitalRepository hospitalRepository;
+    private final AppointmentRepository appointmentRepository;
 
     @Override
-    public Patient save(Long hospitalId, Patient patient) {
+    public void save(Long hospitalId, Patient patient) {
         Hospital hospital = hospitalRepository.getById(hospitalId);
         hospital.addPatient(patient);
         patient.setHospital(hospital);
-        return patientRepository.save(patient);
+        patientRepository.save(patient);
     }
 
     @Override
@@ -35,10 +35,6 @@ public class PatientServiceImpl implements PatientService {
         return patientRepository.getAll(id);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        patientRepository.deleteById(id);
-    }
 
     @Override
     public Patient getById(Long id) {
@@ -46,34 +42,29 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void update(Long id, Patient newPatient) {
-        patientRepository.update(id, newPatient);
+    public Patient update(Long id, Patient newPatient) {
+        Patient oldPatient = patientRepository.getById(id);
+        oldPatient.setFirstName(newPatient.getFirstName());
+        oldPatient.setLastName(newPatient.getLastName());
+        oldPatient.setGender(newPatient.getGender());
+        oldPatient.setEmail(newPatient.getEmail());
+        oldPatient.setPhoneNumber(newPatient.getPhoneNumber());
+        return patientRepository.update(oldPatient);
     }
 
     @Override
-    public void assignPatient(Long appointmentId, Long patientId) throws IOException {
-        patientRepository.assignPatient(appointmentId, patientId);
-    }
-
-    public void validation(String phoneNumber) {
-        int count = 0;
-        if (phoneNumber.length() == 13
-                && phoneNumber.charAt(0) == '+'
-                && phoneNumber.charAt(1) == '9'
-                && phoneNumber.charAt(2) == '9'
-                && phoneNumber.charAt(3) == '6') {
-            for (Character i : phoneNumber.toCharArray()) {
-                if (count != 0) {
-                    if (!Character.isDigit(i)) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "number not in valid range");
-                    }
-                }
-                count++;
-            }
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "number not found");
+    public void delete(Long id) {
+        Patient patient = getById(id);
+        Hospital hospital = patient.getHospital();
+        List<Appointment> appointments = patient.getAppointments();
+        appointments.forEach(appointment -> appointment.getPatient().setAppointments(null));
+        appointments.forEach(appointment -> appointment.getDoctor().setAppointments(null));
+        hospital.getAppointments().removeAll(appointments);
+        for (int i = 0; i < appointments.size(); i++) {
+            appointmentRepository.delete(appointments.get(i).getId());
         }
-
-
+        patientRepository.deleteById(id);
     }
+
+
 }

@@ -48,7 +48,7 @@ public class Patient {
 
     private Gender gender;
 
-    @Column(unique = true)
+
     @NotEmpty(message = "Email should not be empty")
     @Email(message = "Email should be valid")
     private String email;

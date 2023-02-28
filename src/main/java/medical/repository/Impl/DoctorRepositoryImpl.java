@@ -4,16 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import medical.entity.Appointment;
 import medical.entity.Department;
 import medical.entity.Doctor;
-import medical.entity.Hospital;
 import medical.repository.DoctorRepository;
 import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -26,15 +22,8 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     private EntityManager entityManager;
 
     @Override
-    public Doctor save(Doctor doctor) {
-        try {
-            entityManager.persist(doctor);
-            return doctor;
-        } catch (
-                HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return null;
+    public void save(Doctor doctor) {
+      entityManager.persist(doctor);
     }
 
     @Override
@@ -45,62 +34,27 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
     @Override
     public void deleteById(Long id) {
-        boolean delete = false;
-        try {
-            Doctor doctor = entityManager.find(Doctor.class, id);
-            entityManager.remove(entityManager.merge(doctor));
-            delete = true;
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
+         entityManager.remove(entityManager.find(Doctor.class,id));
         }
-        System.out.println(delete ? "Doctor Deleted Successfully": "Doctor was not deleted");
-    }
+
+
 
 
     @Override
     public Doctor getById(Long id) {
-        try{
-            Doctor doctor = entityManager.find(Doctor.class,id );
-            return doctor;
-
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-        return null;
+ return entityManager.find(Doctor.class ,id);
     }
 
     @Override
-    public void update(Long id, Doctor newDoctor) {
-        boolean updated = false;
-        try{
-            Doctor doctor = entityManager.find(Doctor.class, id);
-            doctor.setFirstName(newDoctor.getFirstName());
-            doctor.setLastName(newDoctor.getLastName());
-            doctor.setEmail(newDoctor.getEmail());
-            doctor.setPosition(newDoctor.getPosition());
-            entityManager.merge(doctor);
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-        System.out.println(updated ? "Doctor is updated successfully" : "Doctor was not updated");
+    public Doctor update(Doctor newDoctor) {
 
+        return newDoctor;
     }
 
     @Override
-    public void assignDoctor(Long appointmentId, Long doctorId) throws IOException {
-        Doctor doctor = entityManager.find(Doctor.class, doctorId);
-        Appointment appointment = entityManager.find(Appointment.class, appointmentId);
-        if(appointment.getDoctor()!=null){
-            for (Doctor d: appointment.getHospital().getDoctors()) {
-                if(d.getId() == doctorId){
-                    throw new IOException("this is have signed");
-                }
-            }
-        }
-        doctor.addAppointments(appointment);
-        appointment.setDoctor(doctor);
-        entityManager.merge(doctor);
-        entityManager.merge(appointment);
+    public List<Department> getAllDepartmentDoctorById(Long doctorId) {
+        return entityManager.createQuery("select d from Department d join d.doctors doctor where doctor.id=:id", Department.class).setParameter("id",doctorId).getResultList();
     }
+
 
 }

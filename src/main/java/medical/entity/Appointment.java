@@ -30,15 +30,9 @@ public class Appointment {
     private Doctor doctor;
     @ManyToOne(cascade = {REFRESH, DETACH, MERGE, PERSIST})
     private Department department;
-    @ManyToOne(cascade = {REFRESH,PERSIST,DETACH,MERGE},fetch = FetchType.LAZY)
-    private Hospital hospital;
 
-    @Transient
-    private Long patientId;
-    @Transient
-    private Long doctorId;
-    @Transient
-    private Long departmentId;
+
+
     public Appointment(LocalDate date) {
         this.date = date;
     }

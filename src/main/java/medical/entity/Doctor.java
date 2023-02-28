@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -43,38 +44,26 @@ public class Doctor {
     @Email(message = "Email should be valid")
     private String email;
 
-
-
-
-    @ManyToMany(cascade = {REFRESH,DETACH,MERGE,PERSIST})
-    private List<Department>departments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "doctor",cascade = ALL,fetch = FetchType.EAGER)
-    private List<Appointment>appointments = new ArrayList<>();
-    public void addAppointments(Appointment appointment) {
-        if (appointments == null) {
-            appointments = new ArrayList<>();
-        }
-        appointments.add(appointment);
-    }
-
-        @ManyToOne(cascade = {REFRESH,DETACH,MERGE,PERSIST})
-    private Hospital hospital;
-    @Transient
-    private List<Long >departmentIdes=new ArrayList<>();
-    public void addDepartment(Department department) {
+    @ManyToMany(cascade = {REFRESH, DETACH, MERGE,PERSIST})
+    private List<Department> departments ;
+    public  void addDepartment(Department department){
         if (departments == null){
             departments = new ArrayList<>();
+        }else {
+            departments.add(department);
         }
-        departments.add(department);
     }
 
-    public Doctor(String firstName, String lastName, String position, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.position = position;
-        this.email = email;
+    @ManyToOne(cascade = {REFRESH, DETACH, MERGE,PERSIST})
+    private Hospital hospital;
+    @OneToMany(mappedBy = "doctor", fetch = EAGER,cascade = ALL)
+    private List<Appointment> appointments;
+    public void addAppointment(Appointment appointment){
+        if (appointments == null){
+            appointments = new ArrayList<>();
+        }appointments.add(appointment);
     }
     @Transient
     private Long departmentId;
 }
+

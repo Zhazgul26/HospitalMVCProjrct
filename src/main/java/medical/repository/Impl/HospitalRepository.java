@@ -20,67 +20,36 @@ public class HospitalRepository implements medical.repository.HospitalRepository
     private EntityManager entityManager;
 
     @Override
-    public Hospital save(Hospital hospital) {
-        try {
-            entityManager.persist(hospital);
-            return hospital;
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return null;
+    public void save(Hospital hospital) {
+        entityManager.persist(hospital);
     }
 
     @Override
     public List<Hospital> getAll() {
-        List<Hospital> hospitals = new ArrayList<>();
-        try {
-            hospitals = entityManager.createQuery("select c from Hospital c", Hospital.class).getResultList();
+        return entityManager.createQuery("select h from Hospital h", Hospital.class).getResultList();
 
-        } catch (HibernateException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return hospitals;
     }
 
     @Override
     public void deleteById(Long id) {
-        boolean delete = false;
-        try {
-            Hospital hospital = entityManager.find(Hospital.class, id);
-            entityManager.remove(entityManager.merge(hospital));
-            delete = true;
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-        System.out.println(delete ? "Hospital Deleted Successfully": "Hospital was not deleted");
+        Hospital hospital = getById(id);
+        entityManager.remove(entityManager.contains(hospital) ? hospital : entityManager.merge(hospital));
     }
 
     @Override
     public Hospital getById(Long id) {
 
-        try{
-            Hospital hospital = entityManager.find(Hospital.class,id );
-                return hospital;
+        return entityManager.find(Hospital.class, id);
 
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-        return null;
     }
 
     @Override
     public void update(Long id, Hospital newHospital) {
-        boolean updated = false;
-        try{
-            Hospital hospital = entityManager.find(Hospital.class, id);
-            hospital.setName(newHospital.getName());
-            hospital.setAddress(newHospital.getAddress());
-            hospital.setImage(newHospital.getImage());
-            entityManager.merge(hospital);
-        }catch (HibernateException exception){
-            System.out.println(exception.getMessage());
-        }
-        System.out.println(updated ? "Hospital is updated successfully" : "Hospital was not updated");
+        Hospital hospital = getById(id);
+        hospital.setImage(newHospital.getImage());
+        hospital.setName(newHospital.getName());
+        hospital.setAddress(newHospital.getAddress());
+        entityManager.merge(newHospital);
 
     }
 }

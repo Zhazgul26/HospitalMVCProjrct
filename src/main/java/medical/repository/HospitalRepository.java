@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface HospitalRepository {
 
-    Hospital save(Hospital hospital);
+   void save(Hospital hospital);
 
     List<Hospital> getAll();
 

@@ -18,8 +18,20 @@ public class HospitalServiceImpl implements HospitalService {
 
 
     @Override
-    public Hospital save(Hospital hospital) {
-        return hospitalRepository.save(hospital);
+    public void save(Hospital hospital) {
+        if (hospital.getName().toLowerCase().length() < 1) {
+            for (Character i : hospital.getName().toCharArray()) {
+                if (!Character.isLetter(i)) {
+                    System.out.println("Aty jok hospital bolboit!!!");
+                }
+            }
+        } else {
+            try {
+                hospitalRepository.save(hospital);
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -27,10 +39,7 @@ public class HospitalServiceImpl implements HospitalService {
         return hospitalRepository.getAll();
     }
 
-    @Override
-    public void deleteById(Long id) {
-        hospitalRepository.deleteById(id);
-    }
+
 
     @Override
     public Hospital getById(Long id) {
@@ -40,5 +49,10 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public void update(Long id, Hospital newHospital) {
         hospitalRepository.update(id, newHospital);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        hospitalRepository.deleteById(id);
     }
 }

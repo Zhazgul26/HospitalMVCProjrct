@@ -3,134 +3,77 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Doctors</title>
+    <title>Patients</title>
+    <style>
+        body{
+            background-image: url("https://findado.osteopathic.org/wp-content/uploads/2021/08/GettyImages-1214206519-768x460.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
           crossorigin="anonymous">
-    <style>
-
-        *, *:before, *:after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: white;
-            font-family: 'Open Sans', sans-serif;
-        }
-
-        table {
-            background: #ad95c7;
-            border-radius: 0.25em;
-            border-collapse: collapse;
-            /*margin: 0 auto;*/
-            /*margin-top: 250px;*/
-            width: 100%;
-            height: 900px
-        }
-
-        th {
-            border-bottom: 1px solid #364043;
-            color: rgba(224, 182, 90, 0.97);
-            font-size: 0.85em;
-            font-weight: 600;
-            padding: 0.5em 1em;
-            text-align: left;
-        }
-
-        td {
-            color: white;
-            font-weight: 400;
-            padding: 0.65em 1em;
-        }
-
-        .disabled td {
-            color: #4F5F64;
-        }
-
-        tbody tr {
-            transition: background 0.25s ease;
-        }
-
-        /*tbody tr:hover {*/
-        /*    background: #014055;*/
-        /*}*/
-
-        button {
-            background-color: dimgray;
-            color: white;
-            width: 100px;
-            height: 40px;
-            border-radius: 5px;
-            border: none
-
-        }
-
-        input {
-            background-color: dimgray;
-            border-radius: 5px;
-            color: white;
-            width: 100px;
-            height: 40px;
-        }
-
-        button:hover {
-            background: darkblue;
-        }
-
-    </style>
-
 </head>
 <body>
-<table>
-    <thead class="table-dark">
-    <tr>
-        <th>Id</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Position</th>
-        <th>email</th>
-        <th>Hospital</th>
-        <th>Assign Department</th>.
-        <th>Update</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody class="table-success">
-    <tr th:each="doctor : ${doctors}">
-        <td th:text="${doctor.id}"></td>
-        <td th:text="${doctor.firsName}"></td>
-        <td th:text="${doctor.lastName}"></td>
-        <td th:text="${doctor.position}"></td>
-        <td th:text="${doctor.email}"></td>
-        <td th:text="${doctor.hospital.name}"></td>
 
+<div class="wrapper-btn">
 
-        <td><a>
-            <a th:href="@{/{id}/doctors/{doctorId}/departments(id=${hospitalId}, doctorId=${doctor.id})}">
-                <input type="submit" class="btn btn-outline-primary" th:value="  Departments  ">
-            </a>
-        </a></td>
-        <td><a th:href="@{/update/{id}(id=${doctor.id})}">
-            <button>Update</button>
-        </a>
-        </td>
-        <td><a th:method="GET"
-               th:href="@{/{id}/doctors{doctorId}/delete(id=${hospitalId},doctorId=${doctor.id})}">
-            <button>Delete</button>
-        </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<br><br><br><br>
-<div style="text-align: center">
-    <a th:href="@{/instructors/{id}/adddoctor(id=${hospitalId})}">
-        <button style="font-size: 25px; height: 40px;width: 200px; margin-bottom:50px; border-radius: 5px"> Add Doctor
-        </button>
+    <a th:href="@{/url}">
+    </a>
+    <a th:href="@{/{id}/doctors/saveDoctor (id=${hospitalId})}">
+        <button class="btn btn-primary" type="button">Add new Doctors</button>
     </a>
 </div>
+<div class="container mt-3">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Position</th>
+            <th>email</th>
+            <th>Hospital</th>
+            <th>Assign Department</th>.
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody class="table-success">
+        <tr th:each="doctor : ${doctors}">
+            <td th:text="${doctor.id}"></td>
+            <td th:text="${doctor.firstName}"></td>
+            <td th:text="${doctor.lastName}"></td>
+            <td th:text="${doctor.position}"></td>
+            <td th:text="${doctor.email}"></td>
+            <td th:text="${doctor.hospital.name}"></td>
+            <td>
+            <td>
+                <a th:href="@{/{id}/doctors/{doctorId}/departments(id=${hospitalId}, doctorId=${doctor.id})}">
+                    <input type="submit" class="btn btn-outline-primary" th:value="  Departments  ">
+                </a>
+            </td>
+            </td>
+            <td>
+                <a th:href="@{/{id}/doctors/{doctorId}/edit(id=${hospitalId},doctorId=${doctor.id})}">
+                    <input type="submit" class="btn btn-outline-primary"  th:value="  Update  ">
+                </a>
+            </td>
+            <td>
+                <a>
+                    <form th:method="DELETE"
+                          th:action="@{/{id}/doctors/{doctorId}/delete(id=${hospitalId}, doctorId=${doctor.id})}">
+                        <input type="submit" class="btn btn-outline-primary" th:value="  Delete  "></input>
+                    </form>
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 
 </html>

@@ -34,49 +34,43 @@ public class Hospital {
     private String image;
 
 
-    @OneToMany(mappedBy = "hospital", cascade = {ALL}, fetch = LAZY)
-    private List<Doctor> doctors = new ArrayList<>();
-
-    public void addDoctor(Doctor doctor) {
-        if (doctors == null) {
+    @OneToMany(mappedBy = "hospital",cascade = {ALL}, fetch = LAZY)
+    private List<Doctor> doctors ;
+    public void addDoctor(Doctor doctor){
+        if (doctors == null){
             doctors = new ArrayList<>();
+        }else {
+            doctors.add(doctor);
         }
-        doctors.add(doctor);
     }
 
-    @OneToMany(mappedBy = "hospital", fetch = LAZY)
+    @OneToMany(mappedBy = "hospital",cascade = ALL ,fetch = LAZY)
     private List<Patient> patients = new ArrayList<>();
-
-    public void addPatient(Patient patient) {
-        if (patients == null) {
+    public void addPatient(Patient patient){
+        if (patients == null){
             patients = new ArrayList<>();
+        }else {
+            patients.add(patient);
         }
-        patients.add(patient);
     }
 
-    @OneToMany(mappedBy = "hospital", cascade = {ALL}, fetch = LAZY)
-    private List<Department> departments;
-
-
-    @OneToMany(cascade = {ALL}, fetch = LAZY)
-    private List<Appointment> appointments;
-
-    public void addDepartment(Department department) {
+    @OneToMany(mappedBy = "hospital",cascade = ALL, fetch = LAZY)
+    private List<Department> departments ;
+    public void addDepartment(Department department){
+        if (departments == null){
+            departments = new ArrayList<>();
+        }
         departments.add(department);
     }
 
-
-    public void addAppointment(Appointment appointment) {
-        if (appointments == null) {
+    @OneToMany(cascade = ALL, fetch = LAZY)
+    private List<Appointment> appointments ;
+    public  void  addAppointment(Appointment appointment){
+        if(appointments == null){
             appointments = new ArrayList<>();
-        }
-        appointments.add(appointment);
-
+        }appointments.add(appointment);
     }
 
-    public Hospital(String name, String address, String image) {
-        this.name = name;
-        this.address = address;
-        this.image = image;
-    }
 }
+
+

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface PatientRepository {
-    Patient save(Patient patient);
+    void save(Patient patient);
 
     List<Patient> getAll(Long id);
 
@@ -14,7 +14,6 @@ public interface PatientRepository {
 
     Patient getById(Long id);
 
-    void update(Long id, Patient newPatient);
-    void assignPatient(Long appointmentId, Long patientId) throws IOException;
+    Patient update( Patient newPatient);
 
 }

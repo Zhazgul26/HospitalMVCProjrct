@@ -12,10 +12,8 @@ public interface DepartmentRepository {
     List<Department> getAll(Long id);
     void deleteById(Long id);
     Department getById(Long id);
-    void update (Long id, Department newDepartment);
+    void update ( Department newDepartment);
 
-    void assignDepartment(Long doctorId, Long departmentId) throws IOException;
-    void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException;
     void assignDoctor(Doctor doctor);
 
 }

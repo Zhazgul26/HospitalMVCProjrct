@@ -6,7 +6,7 @@
     <title>Patients</title>
     <style>
         body{
-            background-image: url("https://www.outsourcing-pharma.com/var/wrbm_gb_food_pharma/storage/images/_aliases/wrbm_large/publications/pharmaceutical-science/outsourcing-pharma.com/headlines/clinical-development/survey-on-patients-and-trial-participants-voices/10748462-1-eng-GB/Survey-on-patients-and-trial-participants-voices.jpg");
+            background-image: url("https://assets.publishing.service.gov.uk/government/uploads/system/uploads/image_data/file/89625/s960_PPSE-group-on-white-2-new__002_.jpg");
             background-repeat: no-repeat;
             background-size: cover;
         }
@@ -47,14 +47,28 @@
             <td th:text="${patient.gender}"></td>
             <td th:text="${patient.email}"></td>
             <td th:text="${patient.hospital.name}"></td>
+            <td>
+                <a th:href="@{/{id}/patients/{patientId}/edit(id=${hospitalId},patientId=${patient.id})}">
+                    <input type="submit" class="btn btn-outline-primary"  th:value="  Update  ">
+
+                    <div>
+                        <a>
+                        <form th:method="DELETE" th:action="@{/{id}/patients/{patientId}/delete(id=${hospitalId},patientId=${patient.id})}">
+                            <input type="submit" class="btn btn-outline-primary"  th:value="  Delete  "/>
+
+                        </form>
+                </a>
+
+                    </div>
+                </a>
+            </td>
+
+
+
         </tr>
         </tbody>
-
     </table>
-
-
 </div>
 
 </body>
 </html>
-
