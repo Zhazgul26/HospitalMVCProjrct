@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Transactional
+
 @RequiredArgsConstructor
 public class PatientRepositoryImpl implements PatientRepository {
     @PersistenceContext

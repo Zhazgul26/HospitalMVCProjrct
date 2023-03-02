@@ -31,8 +31,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     @Override
     public List<Department> getAll(Long id) {
-            return  entityManager.createQuery("select c from Department c where c.hospital.id =:id",
-                    Department.class).setParameter("id", id).getResultList();
+        return entityManager.createQuery("select d from Department d where d.hospital.id=:id", Department.class).setParameter("id",id).getResultList();
 
     }
 

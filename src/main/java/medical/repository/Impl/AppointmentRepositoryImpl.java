@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-@Transactional
+
 public class AppointmentRepositoryImpl implements AppointmentRepository {
     @PersistenceContext
     private final EntityManager entityManager;
