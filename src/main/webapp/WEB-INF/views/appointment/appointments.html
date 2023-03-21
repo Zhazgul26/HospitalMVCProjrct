@@ -34,8 +34,12 @@
     <tr th:each="appointment : ${appointments}">
         <td th:text="${appointment.id}"></td>
         <td th:text="${appointment.date}"></td>
+
         <td th:text="${appointment.patient.firstName}"></td>
-        <td th:text="${appointment.doctor.firstName}"></td>
+
+        <td th:text="${appointment.doctor.lastName}"></td>
+        <div style="color: black" th:if ="${#fields.hasErrors('lastName')}" th:errors="l"> LastName error </div>
+
         <td th:text="${appointment.department.name}"></td>
         <td th:text="${appointment.department.hospital.name}"></td>
         <td>

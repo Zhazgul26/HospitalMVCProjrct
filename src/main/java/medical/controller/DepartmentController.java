@@ -4,11 +4,12 @@ package medical.controller;
 import lombok.RequiredArgsConstructor;
 import medical.entity.Department;
 import medical.service.DepartmentService;
-import medical.service.HospitalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -33,7 +34,10 @@ public class DepartmentController {
     }
 
     @PostMapping("/new")
-    String create(@ModelAttribute("department") Department department, @PathVariable("id") Long id) throws Exception {
+    String create(@ModelAttribute("department") @Valid  Department department, BindingResult bindingResult, @PathVariable("id") Long id) throws Exception {
+        if(bindingResult.hasErrors()){
+          return   "department/departments" ;
+        }
         departmentService.save(id, department);
         return "redirect:/{id}/departments";
     }

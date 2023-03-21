@@ -7,7 +7,10 @@ import medical.service.DepartmentService;
 import medical.service.DoctorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/{id}/doctors")
@@ -25,12 +28,14 @@ public class DoctorController {
     }
     @GetMapping("/saveDoctor")
     String save(Model model,@PathVariable("id")Long id){
-        model.addAttribute("doctor",new Doctor());
+        model.addAttribute("doctor",  new Doctor());
         model.addAttribute("hospitalId",id);
-        return "/doctor/saveDoctor";
+        return "doctor/saveDoctor";
     }
     @PostMapping("/new")
-    String create(@ModelAttribute("doctor")Doctor doctor, @PathVariable("id") Long id) {
+    String create(@ModelAttribute("doctor") @Valid  Doctor doctor  , BindingResult bindingResult, @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors())
+            return "doctor/saveDoctor";
         doctorService.save(id,doctor);
         return "redirect:/{id}/doctors";
     }

@@ -44,7 +44,10 @@
         <tr th:each="doctor : ${doctors}">
             <td th:text="${doctor.id}"></td>
             <td th:text="${doctor.firstName}"></td>
+            <div style="color: black" th:if ="${#fields.hasErrors('firstName')}" th:errors="firstName"> LastName error </div>
+
             <td th:text="${doctor.lastName}"></td>
+            <div style="color: black" th:if ="${#fields.hasErrors('lastName')}" th:errors="lastName"> LastName error </div>
             <td th:text="${doctor.position}"></td>
             <td th:text="${doctor.email}"></td>
             <td th:text="${doctor.hospital.name}"></td>
